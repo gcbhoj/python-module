@@ -5,25 +5,27 @@ WORKDIR /app
 RUN mkdir -p /app/jupyter_notebook
 
 # Copy requirements
-COPY requirements.txt .
+COPY requirements_dev.txt .
 
-# Install Python dependencies
-RUN pip install --upgrade pip setuptools wheel && \
-    pip install -r requirements.txt && \
-    pip install notebook ipykernel
+# Install Python dependencies without cache
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements_dev.txt && \
+    pip install --no-cache-dir notebook ipykernel
 
-# Download spaCy English model
-RUN python -m spacy download en_core_web_sm
-RUN python -c "import stanza; stanza.download('sa')"
+
 
 # Copy your app code
 COPY . /app
 
 # Add startup script
 COPY ./scripts/start.sh /start.sh
-RUN chmod +x /start.sh
+
+RUN sed -i 's/\r$//' /start.sh && \
+    chmod +x /start.sh
 
 ENV PYTHONPATH=/app
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 EXPOSE 5100
 

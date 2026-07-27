@@ -3,16 +3,9 @@ Flask-Cors
 beautifulsoup4
 requests
 urllib3
-spacy
-stanza
-transformers
-torch
-dnspython
 pytest
 python-dotenv
 pydantic
-spacy-wordnet
-gunicorn
 flasgger
 pymongo
 
