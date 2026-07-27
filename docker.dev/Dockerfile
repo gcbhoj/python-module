@@ -25,6 +25,6 @@ RUN chmod +x /start.sh
 
 ENV PYTHONPATH=/app
 
-EXPOSE 5001
+EXPOSE 5100
 
 CMD ["/start.sh"]
