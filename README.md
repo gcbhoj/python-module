@@ -1,5 +1,5 @@
 ---
-title: SB Canada Dictionary
+title: My App Python Services
 emoji: 📚
 colorFrom: blue
 colorTo: indigo
