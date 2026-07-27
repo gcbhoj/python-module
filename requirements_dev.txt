@@ -3,9 +3,12 @@ Flask-Cors
 beautifulsoup4
 requests
 urllib3
-pytest
 python-dotenv
 pydantic
 flasgger
 pymongo
+## Bio Python Libraries
+biopython
+## Testing
+pytest
 
