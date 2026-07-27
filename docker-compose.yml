@@ -7,7 +7,7 @@ services:
     env_file:
       - .env
 
-    container_name: sb-canada-dict
+    container_name: python-module
 
     ports:
       - "7860:7860"
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
 
     networks:
-      - sb-canada-dict
+      - python-module
 
 networks:
-  sb-canada-dict:
+  python-module:
