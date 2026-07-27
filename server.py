@@ -1,7 +1,7 @@
 import json
 import os
 from flasgger import Swagger
-from flask import Flask,jsonify,request
+from flask import Flask,request,render_template
 from flask_cors import CORS
 from config.envconfig import PORT,DEBUG
 
@@ -11,7 +11,7 @@ from config.swagger_config import SWAGGER_CONFIG,SWAGGER_TEMPLATE
 
 
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder="doc")
 CORS(app)
 
 Swagger(app, config=SWAGGER_CONFIG, template=SWAGGER_TEMPLATE)
@@ -23,10 +23,8 @@ BASE_URL = "/api/v1/python"
 
 @app.route("/")
 def home():
-    return jsonify({
-        "success": True,
-        "message": "SB Canada Dictionary API is running"
-    })
+    prod_url = f"{request.host_url.rstrip('/')}/api-docs"
+    return render_template("index.html",prod_url=prod_url)
     
 @app.route("/debug/files")
 def debug_files():

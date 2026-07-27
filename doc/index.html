@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SB Dictionary Module</title>
+
+    <!-- Bootstrap 5 CSS CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!--API Documentation-->
+
+    <div class="container mt-5">
+      <h3
+        class="text-primary"
+        style="cursor: pointer"
+        data-bs-toggle="collapse"
+        data-bs-target="#apiDocs"
+        aria-expanded="false"
+        aria-controls="apiDocs"
+      >
+        API Documentation :
+      </h3>
+
+      <div class="collapse mt-3" id="apiDocs">
+        <ul class="list-group">
+          <li class="list-group-item">
+            Development:
+            <a href="http://localhost:5100/api-docs" target="_blank">
+              http://localhost:5100/api-docs
+            </a>
+          </li>
+
+          <li class="list-group-item">
+            Production:
+            <a href="{{ prod_url }}" target="_blank"> {{ prod_url }} </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
