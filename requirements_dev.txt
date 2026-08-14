@@ -12,3 +12,5 @@ biopython
 ## Testing
 pytest
 
+nltk
+

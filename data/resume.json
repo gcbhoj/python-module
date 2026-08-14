@@ -1,0 +1,232 @@
+{
+  "name": "Bhoj Bahadur Gharti Chhetri",
+  "alias": "Bhoj GC",
+  "primaryEmail": "gcbhoj@gmail.com",
+  "contact": "647-303-6737",
+  "github": "https://github.com/gcbhoj",
+  "linkedin": "www.linkedin.com/in/bhojgc",
+  "location": "Brampton,Ontario, Canada",
+  "aboutMe": "Motivated Software Development and Network Engineering final-year student with hands-on academic and three-term co-op experience designing, developing, testing, and deploying full-stack web applications. Skilled in building responsive applications using Spring Boot and Angular for academic projects and developing MERN stack applications (MongoDB, Express.js, React, and Node.js) during co-op placements, with deployments to cloud platforms. Proficient in JavaScript, RESTful API development, MySQL, MongoDB, Git, and Agile development practices. Fast learner and collaborative team member with experience contributing to software development, troubleshooting application issues, and delivering maintainable software solutions.",
+  "demos": [
+    {
+      "categories": [
+        {
+          "id": 1,
+          "key": "co-op",
+          "title": "Co-op Projects",
+          "projects": [
+            {
+              "id": 1,
+              "title": "Punch-n-Spell",
+              "videoLink": "https://player.vimeo.com/video/1216895877",
+              "github": "https://samskrita-bharati.github.io/punch-n-spell/",
+              "year": "Aug-Dec 2024"
+            },
+            {
+              "id": 2,
+              "title": "Word Complex/WordHunt",
+              "videoLink": "https://player.vimeo.com/video/1216898199",
+              "github": "https://word-complex.vercel.app/",
+              "year": "May-July 2026"
+            },
+            {
+              "id": 3,
+              "title": "Dictionary Application",
+              "videoLink": "https://player.vimeo.com/video/1216899004",
+              "github": "https://sbdictionary-942e.onrender.com",
+              "year": "May-July 2026"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "key": "educational",
+          "title": "Educational Projects",
+          "projects": [
+            {
+              "id": 1,
+              "title": "Expense Reimbursement System",
+              "videoLink": "https://vimeo.com/1217022465",
+              "year": "2025"
+            },
+            {
+              "id": 2,
+              "title": "ZipCart Prototype",
+              "videoLink": "https://vimeo.com/1217061733",
+              "year": "2025-2026"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "key": "personal",
+          "title": "Personal Projects",
+          "projects": []
+        },
+        {
+          "id": 4,
+          "key": "web development",
+          "title": "Full-Time Projects",
+          "projects": []
+        }
+      ]
+    }
+  ],
+  "education": [
+    {
+      "id": 1,
+      "type": "Advanced Diploma",
+      "faculty": "Software Development & Network Engineering",
+      "year": "2023-2026",
+      "institution": "Sheridan College",
+      "institutionLink": "https://www.sheridancollege.ca/",
+      "country": "Brampton, Ontario, Canada"
+    },
+    {
+      "id": 2,
+      "type": "Masters in Business Studies",
+      "faculty": "Finance",
+      "year": "2003-2007",
+      "institution": "Shanker Dev Campus",
+      "affiliation": "Tribhuvan University",
+      "institutionLink": "https://sdc.tu.edu.np/",
+      "affiliationLink": "https://tu.edu.np/",
+      "country": "Kathmandu, Nepal"
+    },
+    {
+      "id": 3,
+      "type": "Bachelors in Science",
+      "faculty": "Psychology",
+      "year": "2000-2003",
+      "institution": "Presidency College",
+      "affiliation": "Madras University",
+      "institutionLink": "https://www.pcc.ac.in/",
+      "affiliationLink": "https://www.unom.ac.in/",
+      "country": "Chennai, TamilNadu, India"
+    }
+  ],
+  "workExperience": [
+    {
+      "id": 1,
+      "type": "Co-Op",
+      "title": "Full Stack Application Developer",
+      "organization": "Sheridan College, School of Applied Computing, Davis Campus",
+      "location": "Brampton,Ontario, Canada",
+      "jobDescription": [
+        "Designed and implemented backend services for Word Complex Application, developing a modular architecture with separate game routes and integrating backend data workflows to support gamification features.",
+        "Developed Python-based RESTful API services to collect, process, and manage open-source Sanskrit and English learning content by integrating web scraping, spaCy, Dharmamitra NLP libraries, and MongoDB data storage.",
+        "Collaborated with an eight-member Agile development team to design, develop, test, debug, and integrate backend services with application components.",
+        "Implemented backend application logic using Node.js and MongoDB to support structured data storage, retrieval and transformation for application workflows.",
+        "Developed the Punch-N-Spell interactive learning game by implementing JavaScript-based game logic, HTML5 Canvas rendering, and user interaction features.",
+        "Maintained technical documentation, project resources, and development records to support team collaboration and project continuity."
+      ],
+      "workYears": [
+        {
+          "from": {
+            "month": "May",
+            "year": "2026"
+          },
+          "to": {
+            "month": "July",
+            "year": "2026"
+          }
+        },
+        {
+          "from": {
+            "month": "May",
+            "year": "2025"
+          },
+          "to": {
+            "month": "July",
+            "year": "2025"
+          }
+        },
+        {
+          "from": {
+            "month": "August",
+            "year": "2024"
+          },
+          "to": {
+            "month": "December",
+            "year": "2024"
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "Full-Time",
+      "title": "Production Co-Ordinator",
+      "organization": "Jeld-Wen Windows & Doors-Toronto Division",
+      "location": "Vaughan,Ontario, Canada",
+      "jobDescription": [
+        "Created daily production plans as per demands, tracking production flow and coordinated with sales and logistics to meet customer demands.",
+        "Communicated complete and accurate batch details with the production team including specifications, quantities, deadlines, and any special instructions on daily basis.",
+        "Implemented schedule adjustments, such as prioritizing specific orders or reallocating resources, to accommodate prepared customers with urgent deadlines or special requirements daily.",
+        "Generated daily and weekly production reports and workflow reports to monitor efficiency and support data-driven scheduling decisions."
+      ],
+      "workYears": [
+        {
+          "from": {
+            "month": "May",
+            "year": "2019"
+          },
+          "to": {
+            "month": "August",
+            "year": "2021"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "Full-Time",
+      "title": "Team-Lead",
+      "organization": "Jeld-Wen Windows & Doors-Toronto Division",
+      "location": "Vaughan,Ontario, Canada",
+      "jobDescription": [
+        "Collaborated with relevant departments, including quality control, to ascertain the real-time status of production, ensuring all processes align for timely completion of orders daily.",
+        "Inspected completed work for imperfections to verify product consistency. Additionally, quality control tools utilized to ensure precise assessment and documentation of any identified issues daily.",
+        "Conducted audits at regular intervals to uphold cleanliness, organization, and efficiency standards are met in accordance with 5s principles, reducing wastage and injury rate by 20%.",
+        "Documented completed tasks, issues encountered during the shift recorded the production quantity and quality to the respective departments daily."
+      ],
+      "workYears": [
+        {
+          "from": {
+            "month": "December",
+            "year": "2018"
+          },
+          "to": {
+            "month": "May",
+            "year": "2019"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "Full-Time",
+      "title": "Assit Group Manager",
+      "organization": "Jeld-Wen Windows & Doors-Toronto Division",
+      "location": "Vaughan,Ontario, Canada",
+      "jobDescription": [
+        "Communicated objectives and implementation tactics to team members to meet production goals daily.",
+        "Supervised and coordinated work activities of new hires assisting group managers with daily tasks on a regular basis.",
+        "Developed, regularly updated, and conducted training on comprehensive SOPs for work operations and machine instructions, ensuring alignment with industry best practices and regulatory requirements.",
+        "Managed workload distribution among employees by implementing a comprehensive cross-training program and periodically rotating employees to different areas within the plant."
+      ],
+      "workYears": [
+        {
+          "from": {
+            "month": "November",
+            "year": "2014"
+          },
+          "to": {
+            "month": "December",
+            "year": "2018"
+          }
+        }
+      ]
+    }
+  ]
+}
