@@ -80,24 +80,38 @@ class ProfileAssistant:
         while not self.is_final_query:
 
             user_input = input("You: ").strip()
-
+            
             # Ignore empty input
             if not user_input:
                 continue
+            
+            normalized_user_input = self._normalize_input(user_input)
 
             # Exit check
             if user_input.lower() == self.final_query.lower():
-
                 self.is_final_query = True
-
                 print(f"{self.name}: Goodbye! Have a great day.")
 
                 break
 
             # Check for greeting
-            if self.myAssistant.is_greeting_user_input(user_input):
-                reply_greeting = self.greeting_manager.generate_greeting_reply(user_input)
+            if self.myAssistant.is_greeting_user_input(normalized_user_input):
+                reply_greeting = self.greeting_manager.generate_greeting_reply(normalized_user_input)
                 print(reply_greeting)
+                continue
+            # Check if the user Input is constant questions
+            if self.myAssistant.is_constant_question(normalized_user_input):
+                reply_const_question = self.myAssistant.generate_response_constant_question(
+                        normalized_user_input,
+                        self.name,
+                        self.resume_reader.get_name(),
+                        self.resume_reader.get_location(),
+                        self.resume_reader.get_email(),
+                        self.resume_reader.get_github(),
+                        self.resume_reader.get_linkedin()
+                    )
+                    
+                print(reply_const_question)
                 continue
 
 
@@ -105,6 +119,23 @@ class ProfileAssistant:
             response = self.process_query(user_input)
 
             print(f"{self.name}: {response}\n")
+            
+    
+    def _normalize_input(user_input: str) -> str:
+
+            if not user_input:
+                return ""
+
+            # Remove leading/trailing whitespace
+            normalized = user_input.strip().lower()
+
+            # Remove question marks
+            normalized = normalized.replace("?", "")
+
+            # Normalize multiple spaces
+            normalized = re.sub(r"\s+", " ", normalized)
+
+            return normalized.strip()
 
 
 

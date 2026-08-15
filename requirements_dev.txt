@@ -12,5 +12,5 @@ biopython
 ## Testing
 pytest
 
-nltk
+sentence-transformers
 
