@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from profile_assistant.const_enums import TimedGreeting,NormalGreetings
+from profile_assistant.const_enums import  TimedGreeting,NormalGreetings, ExitResponses
 
 
 class GreetingsManager:
@@ -20,6 +20,23 @@ class GreetingsManager:
             f"Type q to quit this conversation."
         )
         
+    def generate_exit_greeting(self):
+        hour = self.time.hour
+        if 5 <= hour < 12:
+            return ExitResponses.MORNING.value
+
+        elif 12 <= hour < 17:
+            return ExitResponses.AFTERNOON.value
+
+        elif 17 <= hour < 21:
+            return ExitResponses.EVENING.value
+
+        else:
+            return ExitResponses.NIGHT.value
+        
+        
+        
+        
         
     def generate_timed_greeting(self):
         hour = self.time.hour
@@ -36,12 +53,7 @@ class GreetingsManager:
         else:
             return TimedGreeting.GOOD_NIGHT.value
         
-    def generate_greeting_reply(self, greeting):
-
-        if greeting in TimedGreeting:
-            return self.generate_timed_greeting().value
-        elif greeting in NormalGreetings:
-            return greeting
-
-        return None
-        
+    def generate_normal_greeting(self):
+        return NormalGreetings.HELLO.value
+    
+    

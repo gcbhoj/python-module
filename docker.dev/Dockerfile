@@ -20,7 +20,6 @@ COPY . /app
 # Add startup script
 COPY ./scripts/start.sh /start.sh
 
-COPY ./trialImages /trialImages
 
 RUN sed -i 's/\r$//' /start.sh && \
     chmod +x /start.sh

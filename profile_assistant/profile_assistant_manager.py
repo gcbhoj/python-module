@@ -2,78 +2,73 @@ import re
 
 from datetime import datetime,date
 
-from profile_assistant.const_enums import TimedGreeting,NormalGreetings,EducationConst,ProjectsConst,ContactConst,ExitResponses,ConstantQuestions,ConstantAnswers
+from profile_assistant.const_enums import BotsInformation, BotsInformationResponse
 
 from profile_assistant.date_time_manager import DateTimeManager
 
 from api_calls.open_weather_map import GetCurrentWeatherData
+from profile_assistant.question_analyzer import SentenceAnalyzer
 
 
 
 class ProfileAssistantManager:
     def __init__(self):
         self.date_time_manager  = DateTimeManager()
-    
-    
-    def is_greeting_user_input(self, user_input):
-
-        intent = self._match_intent(user_input)
-
-        return intent == "greeting"
-    
-    def is_constant_question(self,user_input):
+        self.question_analyzer = SentenceAnalyzer()
         
-        if user_input in ConstantQuestions:
+        
+        
+    def generate_bot_info_reply(self, intent, bots_name, date_of_birth):
+        
+        print(intent)
+        
+        match intent:
+            case BotsInformation.BOTS_NAME.name:
+                return BotsInformationResponse.BOTS_NAME.value + bots_name
+            
+            case BotsInformation.BOTS_PURPOSE.name:
+                return BotsInformationResponse.BOTS_PURPOSE.value
+            
+            case BotsInformation.BOTS_CAPABILITIES.name:
+                return BotsInformationResponse.BOTS_CAPABILITIES.value
+            
+            case BotsInformation.BOTS_DATE_OF_BIRTH.name:
+                return BotsInformationResponse.BOTS_DATE_OF_BIRTH.value + date_of_birth
+            
+            case BotsInformation.BOTS_AGE.name:
+                return BotsInformationResponse.BOTS_AGE.value + self._calculate_age(date_of_birth)
+            
+            case _:
+                return "Much more to follow "
+        
+        
+    
+    
+    def is_normal_greeting_user_input(self, user_input):
+        
+        analyzer = self.question_analyzer.analyse_user_input(user_input)
+
+        intent = analyzer["category"]
+
+        if intent == "NormalGreetings":
             return True
+        
         return False
     
-    def generate_response_constant_question(self, question, bots_name,profile_owner, location,email_contact,github_link,linkedin_link):
+    def is_timed_greeting_user_input(self, user_input):
+        analyzer = self.question_analyzer.analyse_user_input(user_input)
+
+        intent = analyzer["category"]
+
+        if intent == "NormalGreetings":
+            return False
         
-        if question == ConstantQuestions.BOTS_NAME.value:
-            return ConstantAnswers.BOTS_NAME.value + bots_name
+        return True
+    
+ 
         
-        elif question == ConstantQuestions.BOTS_PURPOSE.value:
-            return ConstantAnswers.BOTS_PURPOSE.value
         
-        elif question == ConstantQuestions.BOTS_CAPABILITIES.value:
-            return ConstantAnswers.BOTS_CAPABILITIES.value
-        
-        elif question ==  ConstantQuestions.DEVELOPERS_NAME.value:
-            return ConstantAnswers.DEVELOPERS_NAME.value + profile_owner
-        
-        elif question == ConstantQuestions.PROFILE_NAME.value:
-            return ConstantAnswers.PROFILE_NAME.value + profile_owner
-        
-        elif question == ConstantQuestions.PROFILE_ALIAS.value:
-            return ConstantAnswers.PROFILE_ALIAS.value + profile_owner
-        
-        elif question == ConstantQuestions.CURRENT_TIME.value:
-            return ConstantAnswers.CURRENT_TIME.value + self.date_time_manager.get_current_time()
-        
-        elif question == ConstantQuestions.CURRENT_DATE.value:
-            return ConstantAnswers.CURRENT_DATE + self.date_time_manager.get_current_date()
-        
-        elif question == ConstantQuestions.CURRENT_LOCATION.value:
-            return ConstantAnswers.CURRENT_LOCATION + location
-        
-        elif question == ConstantQuestions.CURRENT_WEATHER.value:
-            return ConstantAnswers.CURRENT_WEATHER.value + self._retrieve_current_weather_data()
             
-        
-        elif question == ConstantQuestions.WEBSITE.value:
-            return ConstantAnswers.WEBSITE.value
-        
-        elif question == ConstantQuestions.CONTACT.value:
-            return ConstantAnswers.CONTACT.value + email_contact
-        
-        elif question ==  ConstantQuestions.GITHUB.value:
-            return ConstantAnswers.GITHUB.value + github_link
-        
-        elif question == ConstantQuestions.LINKEDIN.value:
-            return ConstantAnswers.LINKEDIN.value + linkedin_link
-        
-        return None
-        
     
     
     def _retrieve_current_weather_data(self):

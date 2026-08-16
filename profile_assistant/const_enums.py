@@ -1,6 +1,15 @@
 from enum import Enum
 
 
+class PersonCall(Enum):
+    BOT = "you"
+    PROFILE_OWNER = "he/his"
+    USER = "my"
+
+class ExitInformation(Enum):
+    Q ="q"
+    EXIT = "exit"
+    BYE = "bye"
 class TimedGreeting(Enum):
 
     GOOD_MORNING = "good morning"
@@ -9,7 +18,7 @@ class TimedGreeting(Enum):
     GOOD_NIGHT = "good night"
     
 class NormalGreetings(Enum):
-    HI = "hi",
+    HI = "hi"
     HELLO = "hello"
     HEY = "hey"
     GREETING = "greeting"
@@ -47,24 +56,26 @@ class BotsInformation(Enum):
     BOTS_NAME ="what is your name"
     BOTS_PURPOSE = "what can you do"
     BOTS_CAPABILITIES = "what can you help me with"
-    BOTS_DATE_OF_BITRH = "what is your date of birth"
+    BOTS_DATE_OF_BIRTH = "what is your date of birth"
     BOTS_AGE = "how old are you"
     
 class BotsInformationResponse(Enum):
         # Assistant
 
     BOTS_NAME = "My name is "
-    BOTS_PURPOSE = ("I am currently in my first version, so my capabilities are "
-        "limited. I can describe my developer's resume and help you "
-        "navigate through my developer's website.")
-    BOTS_CAPABILITIES = ("I can describe my developer's resume and help you "
-        "navigate through my developer's website.")
+    BOTS_PURPOSE = [
+        "I'm currently in my early version, so my capabilities are focused and growing.",
+        "My purpose is to showcase my developer's work and answer questions about their background.",
+        "I can walk you through my developer's resume and help you navigate their portfolio website.",
+    ]
+    BOTS_CAPABILITIES = ["I can describe my developer's resume and help you navigate through my developer's website."]
+    BOTS_DATE_OF_BIRTH = "I Was Conceived on May 2026 and was deployed on "
+    BOTS_AGE = "I am "
     
 class DeveloperInformation(Enum):
-        # Developer / Profile Owner
-    DEVELOPERS_NAME = "what is your developer's name"
-    PROFILE_NAME = "whose profile is this"
-    PROFILE_ALIAS = "what is the profile owner's name"
+    DEVELOPERS_NAME = "what is your developer's name who created you who built you who developed you"
+    PROFILE_NAME = "whose profile is this who does this profile belong to"
+    PROFILE_ALIAS = "what is the profile owner's name who owns this profile"
     
 class DeveloperInformationResponse(Enum):
         # Developer / Profile Owner

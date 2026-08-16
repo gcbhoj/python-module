@@ -7,9 +7,9 @@ from flask import Flask,g,request,render_template
 from flask_cors import CORS
 
 from config.envconfig import PORT,DEBUG
-from config.dbconfig import connect_db
+from config.mongodb_config import connect_mongodb
 from config.swagger_config import SWAGGER_CONFIG,SWAGGER_TEMPLATE
-from config.envconfig import configure_logging
+from config.logger_config import configure_logging
 
 from middleware.error_handler import (register_error_handlers)
 
@@ -78,7 +78,7 @@ Swagger(
 # DB CONNECT
 # ============================================================
 
-db = connect_db()
+db = connect_mongodb()
 
 # ============================================================
 # SETTING UP BASE URL
