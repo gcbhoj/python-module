@@ -1,11 +1,13 @@
 from datetime import datetime
 
 from profile_assistant.const_enums import  TimedGreeting,NormalGreetings, ExitResponses
+from profile_assistant.date_time_manager import DateTimeManager
 
 
 class GreetingsManager:
 
     def __init__(self):
+        self.date_time_manager = DateTimeManager()
         self.time = datetime.now()
 
     def generate_startup_greeting(self,
@@ -21,22 +23,17 @@ class GreetingsManager:
         )
         
     def generate_exit_greeting(self):
-        hour = self.time.hour
-        if 5 <= hour < 12:
-            return ExitResponses.MORNING.value
-
-        elif 12 <= hour < 17:
-            return ExitResponses.AFTERNOON.value
-
-        elif 17 <= hour < 21:
-            return ExitResponses.EVENING.value
-
-        else:
-            return ExitResponses.NIGHT.value
+        hour = self.date_time_manager.get_current_time().hour
         
-        
-        
-        
+        match hour:
+            case h if 5 <= h < 12:
+                return ExitResponses.MORNING.value
+            case h if 12 <= h < 17:
+                return ExitResponses.AFTERNOON.value
+            case h if 17 <= h < 22:
+                return ExitResponses.EVENING.value
+            case _:
+                return ExitResponses.NIGHT.value
         
     def generate_timed_greeting(self):
         hour = self.time.hour

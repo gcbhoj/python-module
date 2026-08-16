@@ -5,7 +5,7 @@ from utils.file_system_reader import FileSystemReader
 from profile_assistant.const_enums import ExitInformation
 from repository.resume_reader import ResumeReader
 
-from profile_assistant.const_enums import NormalGreetings, TimedGreeting, BotsInformation
+from profile_assistant.const_enums import NormalGreetings, TimedGreeting, BotsInformation, DateTimeInformation
 
 from profile_assistant.greetings_manager import GreetingsManager
 from profile_assistant.profile_assistant_manager import ProfileAssistantManager
@@ -71,6 +71,10 @@ class ProfileAssistant:
                     
                 case BotsInformation.__name__:
                     reply = self.myAssistant.generate_bot_info_reply(intent, self.name, self.date_of_birth)
+                    print(f"{self.name}: {reply}.")
+                    
+                case DateTimeInformation.__name__:
+                    reply = self.myAssistant.generate_date_time_reply(intent)
                     print(f"{self.name}: {reply}.")
                 case _:
                     print(user_input_analysis)

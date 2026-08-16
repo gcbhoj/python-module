@@ -2,7 +2,7 @@ import re
 
 from datetime import datetime,date
 
-from profile_assistant.const_enums import BotsInformation, BotsInformationResponse
+from profile_assistant.const_enums import BotsInformation, BotsInformationResponse,DateTimeInformation ,DateTimeInformationResponse
 
 from profile_assistant.date_time_manager import DateTimeManager
 
@@ -16,11 +16,28 @@ class ProfileAssistantManager:
         self.date_time_manager  = DateTimeManager()
         self.question_analyzer = SentenceAnalyzer()
         
+    def generate_date_time_reply(self,intent):
+        
+        match intent:
+            case DateTimeInformation.CURRENT_TIME.name:
+                return DateTimeInformationResponse.CURRENT_TIME.value + self.date_time_manager.get_current_time()
+            
+            case DateTimeInformation.CURRENT_DATE.name:
+                return DateTimeInformationResponse.CURRENT_DATE.value + self.date_time_manager.get_current_date()
+            
+            case DateTimeInformation.CURRENT_DAY.name:
+                return DateTimeInformationResponse.CURRENT_DAY.value + self.date_time_manager.get_current_day()
+            
+            case DateTimeInformation.DAY_PART.name:
+                return DateTimeInformationResponse.DAY_PART.value + self.date_time_manager.get_current_time()
+            
+            case _:
+                return self.date_time_manager.get_current_time()
+        
+        
         
         
     def generate_bot_info_reply(self, intent, bots_name, date_of_birth):
-        
-        print(intent)
         
         match intent:
             case BotsInformation.BOTS_NAME.name:
@@ -64,8 +81,7 @@ class ProfileAssistantManager:
         if intent == "NormalGreetings":
             return False
         
-        return True           
-    
+        return True
     
     def _retrieve_current_weather_data(self):
         forecaster = GetCurrentWeatherData()

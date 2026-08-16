@@ -95,12 +95,14 @@ class DateTimeInformation(Enum):
     CURRENT_TIME = "what is the current time"
     CURRENT_DATE = "what is the current date"
     CURRENT_DAY = "what day is it"
+    DAY_PART = "what part of day is it"
     
 class DateTimeInformationResponse(Enum):
         # Time / Date
-    CURRENT_TIME = "The current time is "
+    CURRENT_TIME = "Current time is "
     CURRENT_DATE = "Today's date is "
     CURRENT_DAY = "Today is "
+    DAY_PART = " As current time is "
     
 class GeographicInformation(Enum):
         # Location
