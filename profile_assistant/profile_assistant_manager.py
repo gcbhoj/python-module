@@ -31,6 +31,7 @@ class ProfileAssistantManager:
             
             case BotsInformation.BOTS_CAPABILITIES.name:
                 return BotsInformationResponse.BOTS_CAPABILITIES.value
+
             
             case BotsInformation.BOTS_DATE_OF_BIRTH.name:
                 return BotsInformationResponse.BOTS_DATE_OF_BIRTH.value + date_of_birth
@@ -63,34 +64,47 @@ class ProfileAssistantManager:
         if intent == "NormalGreetings":
             return False
         
-        return True
-    
- 
-        
-        
-            
+        return True           
     
     
     def _retrieve_current_weather_data(self):
         forecaster = GetCurrentWeatherData()
         return forecaster.get_weather_report()
     
-    def _calculate_age(self, date_of_birth):
+    def _calculate_age(self, date_of_birth) -> str:
+        # 1. Parse string to date object if needed
         if isinstance(date_of_birth, str):
-            date_of_birth = datetime.strptime(
-                date_of_birth,
-                "%Y-%m-%d"
-            ).date()
+            try:
+                date_of_birth = datetime.strptime(
+                    date_of_birth, "%Y-%m-%d"
+                ).date()
+            except ValueError:
+                return "recently created"
 
         today = date.today()
 
-        age = today.year - date_of_birth.year
+        # 2. Check for future creation date (e.g. today is before DOB)
+        if date_of_birth > today:
+            days_until = (date_of_birth - today).days
+            if days_until == 1:
+                return "1 day away from launch"
+            return f"{days_until} days away from launch"
 
-        if (
-            (today.month, today.day)
-            < (date_of_birth.month, date_of_birth.day)
-        ):
-            age -= 1
+        # 3. Calculate age in years
+        age_years = today.year - date_of_birth.year
+        if (today.month, today.day) < (date_of_birth.month, date_of_birth.day):
+            age_years -= 1
 
-        return age
+        # 4. If under 1 year old, return age in days or months
+        if age_years < 1:
+            days = (today - date_of_birth).days
+            if days < 30:
+                return f"{days} day{'s' if days != 1 else ''} old"
+
+            months = (today.year - date_of_birth.year) * 12 + (
+                today.month - date_of_birth.month
+            )
+            return f"{months} month{'s' if months != 1 else ''} old"
+
+        return f"{age_years} year{'s' if age_years != 1 else ''} old"
         

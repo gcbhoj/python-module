@@ -1,26 +1,30 @@
+import re
 from enum import Enum
 from sentence_transformers import SentenceTransformer, util
 
-# Import only Question Enums needed for intent recognition
 from profile_assistant.const_enums import (
-    TimedGreeting,
-    NormalGreetings,
     BotsInformation,
     DateTimeInformation,
     DeveloperInformation,
     GeographicInformation,
+    NormalGreetings,
     ProfileInformation,
+    TimedGreeting,
 )
+
+
+class PersonCall(Enum):
+    BOT = "you"
+    PROFILE_OWNER = "he/his"
+    USER = "my"
 
 
 class SentenceAnalyzer:
 
-    def __init__(self, threshold: float = 0.45):
+    def __init__(self, threshold: float = 0.35):
         self.threshold = threshold
-        # 1. Load sentence-transformer model once
         self.model = SentenceTransformer("all-MiniLM-L6-v2")
 
-        # 2. List all Question Enum classes to analyze
         self.question_enums = [
             TimedGreeting,
             NormalGreetings,
@@ -31,47 +35,91 @@ class SentenceAnalyzer:
             ProfileInformation,
         ]
 
-        # 3. Aggregate enum entries into unified lookup lists
         self.enum_members = []
         self.questions_text = []
 
+        # Build index mapping every sample string to its enum member
         for q_enum_cls in self.question_enums:
             for question_member in q_enum_cls:
-                self.enum_members.append(question_member)
-                self.questions_text.append(question_member.value)
+                val = question_member.value
 
-        # 4. Pre-compute vector embeddings once at application startup
+                # Support both single strings and lists/tuples of question variations
+                variations = val if isinstance(val, (list, tuple)) else [val]
+
+                for phrase in variations:
+                    normalized_phrase = self._normalize_entity_references(
+                        phrase
+                    )
+                    self.enum_members.append(question_member)
+                    self.questions_text.append(normalized_phrase)
+
+        # Pre-compute target sentence embeddings
         self.question_embeddings = self.model.encode(
             self.questions_text, convert_to_tensor=True
         )
 
-    def analyse_user_input(self, user_input: str):
-        """Analyzes user input across ALL question categories and identifies the matched intent."""
-        # 1. Convert user query to vector embedding
-        input_embedding = self.model.encode(user_input, convert_to_tensor=True)
+    @staticmethod
+    def _normalize_entity_references(text: str) -> str:
+        """Normalizes possessive and personal pronouns into standardized entities."""
+        text = text.lower()
 
-        # 2. Measure cosine similarity against all stored question vectors
+        # Map 'your', 'yours', 'you' -> 'bot'
+        text = re.sub(r"\b(your|yours|you)\b", PersonCall.BOT.value, text)
+
+        # Map 'his', 'he', 'developer', 'dev' -> 'developer'
+        text = re.sub(
+            r"\b(his|he|developer's|developer|dev)\b",
+            PersonCall.PROFILE_OWNER.value,
+            text,
+        )
+
+        # Map 'my', 'mine', 'i' -> 'user'
+        text = re.sub(r"\b(my|mine|i)\b", PersonCall.USER.value, text)
+
+        return text.strip()
+
+    def analyse_user_input(self, user_input: str) -> dict:
+        """Analyzes normalized user input using hybrid semantic embedding + keyword fallback."""
+
+        # 1. Normalize entity pronouns in query
+        normalized_query = self._normalize_entity_references(user_input)
+
+        # 2. Encode normalized input
+        input_embedding = self.model.encode(
+            normalized_query, convert_to_tensor=True
+        )
+
+        # 3. Compute cosine similarity
         cosine_scores = util.cos_sim(
             input_embedding, self.question_embeddings
         )[0]
-
-        # 3. Find index of highest match score
         best_idx = int(cosine_scores.argmax())
         best_score = float(cosine_scores[best_idx])
 
-        # 4. Return intent details if confidence passes threshold
-        if best_score >= self.threshold:
-            matched_question_member = self.enum_members[best_idx]
+        # 4. Hybrid Keyword Fallback (if score is close to threshold)
+        matched_member = self.enum_members[best_idx]
 
+        if best_score < self.threshold:
+            # Keyword check for short single-word queries like "purpose"
+            query_tokens = set(normalized_query.split())
+            target_tokens = set(self.questions_text[best_idx].split())
+
+            # Overlap check
+            if query_tokens.intersection(target_tokens) and any(
+                len(w) > 3 for w in query_tokens
+            ):
+                best_score = max(best_score, 0.40)  # Boost confidence score
+
+        # 5. Return matched intent structure
+        if best_score >= self.threshold:
             return {
                 "matched": True,
                 "confidence": round(best_score, 4),
-                "category": matched_question_member.__class__.__name__,
-                "intent": matched_question_member.name,
-                "matched_question": matched_question_member.value,
+                "category": matched_member.__class__.__name__,
+                "intent": matched_member.name,
+                "matched_question": matched_member.value,
             }
 
-        # Fallback when no category meets threshold
         return {
             "matched": False,
             "confidence": round(best_score, 4),

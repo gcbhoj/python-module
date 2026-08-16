@@ -1,11 +1,6 @@
 from enum import Enum
 
 
-class PersonCall(Enum):
-    BOT = "you"
-    PROFILE_OWNER = "he/his"
-    USER = "my"
-
 class ExitInformation(Enum):
     Q ="q"
     EXIT = "exit"
@@ -53,9 +48,19 @@ class ExitResponses(Enum):
     
 class BotsInformation(Enum):    
         # Assistant
-    BOTS_NAME ="what is your name"
-    BOTS_PURPOSE = "what can you do"
-    BOTS_CAPABILITIES = "what can you help me with"
+    BOTS_NAME =["what is your name", "who are you", "your name"]
+    BOTS_PURPOSE = [
+        "what is your purpose",
+        "purpose",
+        "what do you do",
+        "why were you built",
+    ]
+    BOTS_CAPABILITIES = [
+        "what can you do",
+        "capabilities",
+        "what are your features",
+        "why were you built",
+    ]
     BOTS_DATE_OF_BIRTH = "what is your date of birth"
     BOTS_AGE = "how old are you"
     
@@ -65,8 +70,10 @@ class BotsInformationResponse(Enum):
     BOTS_NAME = "My name is "
     BOTS_PURPOSE = [
         "I'm currently in my early version, so my capabilities are focused and growing.",
-        "My purpose is to showcase my developer's work and answer questions about their background.",
+        "My purpose is to showcase my developer's work and answer questions about his background.",
         "I can walk you through my developer's resume and help you navigate their portfolio website.",
+        "I can provide you with current date and time",
+        "I can provide you with weather statement for a specific location"
     ]
     BOTS_CAPABILITIES = ["I can describe my developer's resume and help you navigate through my developer's website."]
     BOTS_DATE_OF_BIRTH = "I Was Conceived on May 2026 and was deployed on "
