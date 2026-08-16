@@ -23,7 +23,7 @@ class GreetingsManager:
         )
         
     def generate_exit_greeting(self):
-        hour = self.date_time_manager.get_current_time().hour
+        hour = self.date_time_manager.get_current_datetime().hour
         
         match hour:
             case h if 5 <= h < 12:
@@ -36,7 +36,7 @@ class GreetingsManager:
                 return ExitResponses.NIGHT.value
         
     def generate_timed_greeting(self):
-        hour = self.time.hour
+        hour = self.date_time_manager.get_current_datetime().hour
 
         if 5 <= hour < 12:
             return TimedGreeting.GOOD_MORNING.value
@@ -44,7 +44,7 @@ class GreetingsManager:
         elif 12 <= hour < 17:
             return TimedGreeting.GOOD_AFTERNOON.value
 
-        elif 17 <= hour < 21:
+        elif 17 <= hour < 22:
             return TimedGreeting.GOOD_EVENING.value
 
         else:

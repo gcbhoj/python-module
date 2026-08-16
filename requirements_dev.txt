@@ -13,4 +13,5 @@ biopython
 pytest
 
 sentence-transformers
+gTTS
 

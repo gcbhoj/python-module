@@ -6,13 +6,16 @@ RUN mkdir -p /app/jupyter_notebook
 
 # Copy requirements
 COPY requirements_dev.txt .
+# Minimal Dockerfile setup for gTTS
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    && rm -rf /var/lib/apt-get/lists/*
+
 
 # Install Python dependencies without cache
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r requirements_dev.txt && \
     pip install --no-cache-dir notebook ipykernel
-
-
 
 # Copy your app code
 COPY . /app

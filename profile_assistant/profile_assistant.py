@@ -10,6 +10,7 @@ from profile_assistant.const_enums import NormalGreetings, TimedGreeting, BotsIn
 from profile_assistant.greetings_manager import GreetingsManager
 from profile_assistant.profile_assistant_manager import ProfileAssistantManager
 from profile_assistant.question_analyzer import SentenceAnalyzer
+from profile_assistant.speaker import Speaker
 
 
 class ProfileAssistant:
@@ -17,9 +18,10 @@ class ProfileAssistant:
     def __init__(self):
 
         self.name = "Bahire"
-        self.date_of_birth = "2026-08-17"
+        self.date_of_birth = "2026-08-19"
         self.final_query = [e.value for e in ExitInformation]
         self.is_final_query = False
+        self.is_text_to_speech_enabled = False
         self.location = None
 
         # Initializing resume class
@@ -29,6 +31,7 @@ class ProfileAssistant:
         # Initializing Profile Assistant Manager
         self.myAssistant = ProfileAssistantManager()
         self.question_analyzer = SentenceAnalyzer()
+        self.speaker = Speaker()
 
     def start(self):
         
@@ -37,6 +40,7 @@ class ProfileAssistant:
         initial_greeting = self.greeting_manager.generate_startup_greeting(self.name,profile_alias)
         print(f"{self.greeting_manager.generate_timed_greeting()}\n"
             f"{initial_greeting}"
+            
             )
 
         while not self.is_final_query:
@@ -54,6 +58,7 @@ class ProfileAssistant:
                 self.is_final_query = True
                 print(f"{self.name}: Goodbye!\n"
                       f"{self.greeting_manager.generate_exit_greeting()}")
+                self.speaker.speak(self.greeting_manager.generate_exit_greeting())
                 break
             
             user_input_analysis = self.question_analyzer.analyse_user_input(normalized_user_input)
@@ -64,18 +69,22 @@ class ProfileAssistant:
                 case NormalGreetings.__name__:
                     reply = self.greeting_manager.generate_normal_greeting()
                     print(f"{self.name}: {reply}.")
+                    self.speaker.speak(reply)
                                         
                 case TimedGreeting.__name__:
                     reply = self.greeting_manager.generate_timed_greeting()
                     print(f"{self.name}: {reply}.")
+                    self.speaker.speak(reply)
                     
                 case BotsInformation.__name__:
                     reply = self.myAssistant.generate_bot_info_reply(intent, self.name, self.date_of_birth)
                     print(f"{self.name}: {reply}.")
+                    self.speaker.speak(reply)
                     
                 case DateTimeInformation.__name__:
                     reply = self.myAssistant.generate_date_time_reply(intent)
                     print(f"{self.name}: {reply}.")
+                    self.speaker.speak(reply)
                 case _:
                     print(user_input_analysis)
                 
@@ -96,6 +105,13 @@ class ProfileAssistant:
             normalized = re.sub(r"\s+", " ", normalized)
 
             return normalized.strip()
+        
+    def _enable_text_to_speech(self):
+        self.is_text_to_speech_enabled = True
+
+
+    def _disable_text_to_speech(self):
+        self.is_text_to_speech_enabled = False
 
 
 
