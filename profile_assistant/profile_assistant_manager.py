@@ -48,6 +48,9 @@ class ProfileAssistantManager:
             
             case BotsInformation.BOTS_CAPABILITIES.name:
                 return BotsInformationResponse.BOTS_CAPABILITIES.value
+            
+            case BotsInformation.BOTS_HEALTH.name:
+                return BotsInformationResponse.BOTS_HEALTH.value
 
             
             case BotsInformation.BOTS_DATE_OF_BIRTH.name:
