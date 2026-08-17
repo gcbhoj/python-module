@@ -1,6 +1,8 @@
 from enum import Enum
 
-
+class SpeakerCommand(Enum):
+    ENABLE = "speak on"
+    DISABLE = "speak off"
 class ExitInformation(Enum):
     Q ="q"
     EXIT = "exit"
@@ -61,6 +63,7 @@ class BotsInformation(Enum):
         "what are your features",
         "why were you built",
     ]
+    BOTS_HEALTH = ["how are you","how is your health"]
     BOTS_DATE_OF_BIRTH = "what is your date of birth"
     BOTS_AGE = "how old are you"
     
@@ -75,6 +78,7 @@ class BotsInformationResponse(Enum):
         "I can provide you with current date and time",
         "I can provide you with weather statement for a specific location"
     ]
+    BOTS_HEALTH = "I am doing fine. Thanks for Asking."
     BOTS_CAPABILITIES = ["I can describe my developer's resume and help you navigate through my developer's website."]
     BOTS_DATE_OF_BIRTH = "I Was Conceived on May 2026 and was deployed on "
     BOTS_AGE = "I am "

@@ -16,7 +16,7 @@ class GreetingsManager:
     ) -> str:
 
         return (
-            f"Hi! I am {assist_name}.\n"
+            f"I am {assist_name}.\n"
             f"I can assist you in navigating "
             f"{profile_alias}'s profile website and resume.\n"
             f"Type q to quit this conversation."

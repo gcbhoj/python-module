@@ -1,11 +1,12 @@
 import re
+import os
 
 from utils.file_system_reader import FileSystemReader
 
 from profile_assistant.const_enums import ExitInformation
 from repository.resume_reader import ResumeReader
 
-from profile_assistant.const_enums import NormalGreetings, TimedGreeting, BotsInformation, DateTimeInformation
+from profile_assistant.const_enums import NormalGreetings, TimedGreeting, BotsInformation, DateTimeInformation, SpeakerCommand
 
 from profile_assistant.greetings_manager import GreetingsManager
 from profile_assistant.profile_assistant_manager import ProfileAssistantManager
@@ -21,7 +22,9 @@ class ProfileAssistant:
         self.date_of_birth = "2026-08-19"
         self.final_query = [e.value for e in ExitInformation]
         self.is_final_query = False
-        self.is_text_to_speech_enabled = False
+        self.is_speak_enabled = False
+        if os.getenv("DEV_ENV") == "development":
+            self.is_speak_enabled = True
         self.location = None
 
         # Initializing resume class
@@ -39,9 +42,9 @@ class ProfileAssistant:
         
         initial_greeting = self.greeting_manager.generate_startup_greeting(self.name,profile_alias)
         print(f"{self.greeting_manager.generate_timed_greeting()}\n"
-            f"{initial_greeting}"
-            
+            f"{initial_greeting}"            
             )
+        self.speaker.speak(self.greeting_manager.generate_timed_greeting() + initial_greeting)
 
         while not self.is_final_query:
 
@@ -52,7 +55,7 @@ class ProfileAssistant:
                 continue
             
             normalized_user_input = self._normalize_input(user_input)
-
+            
             # Exit check
             if normalized_user_input in self.final_query:
                 self.is_final_query = True
@@ -112,6 +115,7 @@ class ProfileAssistant:
 
     def _disable_text_to_speech(self):
         self.is_text_to_speech_enabled = False
+        
 
 
 
