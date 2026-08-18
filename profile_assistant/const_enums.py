@@ -1,5 +1,10 @@
 from enum import Enum
 
+
+class ChatType(Enum):
+    REQUEST = "request"
+    RESPONSE = "response"
+
 class SpeakerCommand(Enum):
     ENABLE = "speak on"
     DISABLE = "speak off"

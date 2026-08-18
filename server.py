@@ -1,5 +1,3 @@
-import json
-import os
 import uuid
 
 from flasgger import Swagger
@@ -12,6 +10,9 @@ from config.swagger_config import SWAGGER_CONFIG,SWAGGER_TEMPLATE
 from config.logger_config import configure_logging
 
 from middleware.error_handler import (register_error_handlers)
+
+from controller.profile_assistant_controller import ProfileAssistantController
+
 
 
 
@@ -80,11 +81,40 @@ Swagger(
 
 db = connect_mongodb()
 
+
 # ============================================================
 # SETTING UP BASE URL
 # ============================================================
 
 BASE_URL = "/api/v1/python"
+
+# ============================================================
+# REPOSITORY / APPLICATION INITIALIZATION
+# ============================================================
+
+def initialize_application():
+    """
+    Initialize application-level repositories and
+    required default data.
+    """
+
+    logger.info(
+        "Initializing application repositories..."
+    )
+
+    profile_assistant_controller = (
+        ProfileAssistantController()
+    )
+
+    profile_assistant_controller.initialize_profile_assistant()
+
+    logger.info(
+        "Profile Assistant repository initialized successfully."
+    )
+
+# ============================================================
+# HOME
+# ============================================================
 
 
 @app.route("/")
@@ -93,6 +123,11 @@ def home():
         "Home endpoint called from IP: %s",
         request.remote_addr
     )
+    logger.info(
+        "Following Repository Initialized: %s",
+        "Profile Assistant Repo"
+    )
+    
     prod_url = f"{request.host_url.rstrip('/')}/api-docs"
     return render_template("index.html",prod_url=prod_url)
     
@@ -111,10 +146,22 @@ def home():
 
 
 
+# ============================================================
+# ERROR HANDLERS
+# ============================================================
+
 register_error_handlers(app)
 
+# ============================================================
+# APPLICATION INITIALIZATION
+# ============================================================
+
+initialize_application()
 
 
+# ============================================================
+# DEVELOPMENT SERVER
+# ============================================================
 
 if __name__ == '__main__':
        app.run(
