@@ -13,6 +13,8 @@ from middleware.error_handler import (register_error_handlers)
 
 from controller.profile_assistant_controller import ProfileAssistantController
 
+from routes.profile_assistant_routes import profile_assistant_bp
+
 
 
 
@@ -141,6 +143,11 @@ def home():
 #             "files": os.listdir("/app"),
 #             "data_files": os.listdir("/app/data") if os.path.exists("/app/data") else []
 #         }
+
+# ============================================================
+# API BLUE PRINTS
+# ============================================================
+app.register_blueprint(profile_assistant_bp, url_prefix=BASE_URL+"/profile_assistant")
 
 
 

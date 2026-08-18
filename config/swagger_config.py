@@ -12,13 +12,13 @@ SWAGGER_CONFIG = {
     ],
     "static_url_path": "/flasgger_static",
     "swagger_ui": True,
-    "specs_route": "/docs/"                    # The URL path to view your UI
+    "specs_route": "/api-docs"                    # The URL path to view your UI
 }
 
 SWAGGER_TEMPLATE = {
     "swagger": "2.0",
     "info": {
-        "title": "SB Python Module API's",
+        "title": "My Applications Python Module Endpoint Documentation.",
         "description": "This is Python module.",
         "version": "1.0.0"
     },
