@@ -16,6 +16,7 @@ class LoggingComponent(Enum):
     GLOBAL_EXCEPTION = "global_exception"
     DATE_TIME_MANAGER = "date_time_manager"
     GREETINGS_MANAGER = "greetings_manager"
+    PROFILE_ASSISTANT_MANAGER = "profile_assistant_manager"
 
 
 class LogEvent(Enum):
