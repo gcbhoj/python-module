@@ -1,0 +1,109 @@
+---
+tags:
+  - Profile Assistant
+
+summary: Sends a message to the Profile Assistant.
+
+description: >
+  Sends a user message to an existing chat session and returns
+  the Profile Assistant response. If voice mode is enabled,
+  the response may also contain generated audio.
+
+consumes:
+  - application/json
+
+produces:
+  - application/json
+
+parameters:
+  - name: body
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - chatId
+        - text
+      properties:
+        chatId:
+          type: string
+          description: Unique ID of the chat session.
+          example: "7c8d8e4b-1e6c-4e2d-a1f8-8d7f1b8f2f30"
+
+        text:
+          type: string
+          description: Message sent by the user.
+          example: "What time is it?"
+
+responses:
+  200:
+    description: Chat message processed successfully.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+
+        message:
+          type: string
+          example: Current time is 7:55 PM EDT.
+
+        data:
+          type: object
+          properties:
+            chatId:
+              type: string
+              example: "7c8d8e4b-1e6c-4e2d-a1f8-8d7f1b8f2f30"
+
+            audio:
+              type: string
+              nullable: true
+              description: >
+                Generated audio data or reference to the generated
+                audio response. Null when voice mode is disabled.
+              example: null
+
+  400:
+    description: Invalid chat request.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+
+        message:
+          type: string
+          example: Chat ID is required.
+
+        data:
+          type: object
+          nullable: true
+          example: null
+
+  404:
+    description: Chat session was not found.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+
+        message:
+          type: string
+          example: Chat session was not found.
+
+  500:
+    description: Internal server error.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+
+        message:
+          type: string
+          example: An internal server error occurred.

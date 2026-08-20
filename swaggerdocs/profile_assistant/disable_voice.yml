@@ -1,0 +1,54 @@
+---
+tags:
+  - Profile Assistant
+
+summary: Disables voice mode for the Profile Assistant.
+
+description: >
+  Disables voice responses for the Profile Assistant.
+  Subsequent chat responses will return text without
+  generated audio.
+
+responses:
+  200:
+    description: Voice mode disabled successfully.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+
+        voiceEnabled:
+          type: boolean
+          example: false
+
+        message:
+          type: string
+          example: Voice mode disabled.
+
+  400:
+    description: Unable to disable voice mode.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+
+        message:
+          type: string
+          example: Unable to disable voice mode.
+
+  500:
+    description: Internal server error.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+
+        message:
+          type: string
+          example: An internal server error occurred.

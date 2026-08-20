@@ -1,6 +1,6 @@
 import io
+
 from gtts import gTTS
-from IPython.display import Audio, display
 
 
 class Speaker:
@@ -8,25 +8,40 @@ class Speaker:
     def __init__(self, lang: str = "en"):
         self.lang = lang
 
-    def speak(self, text):
-        """Generates speech and renders an in-browser audio player in Jupyter."""
-        if not text:
-            return
+    def speak(self, text) -> bytes | None:
+        """
+        Convert text to MP3 audio and return the MP3 bytes.
+        """
 
-        # Convert list/tuple structures into a continuous string
+        if not text:
+            return None
+
         if isinstance(text, (list, tuple)):
-            text_str = ". ".join(str(item) for item in text)
+            text_str = ". ".join(
+                str(item)
+                for item in text
+            )
         else:
-            text_str = str(text)
+            text_str = str(text).strip()
+
+        if not text_str:
+            return None
 
         try:
-            # Generate speech in memory
-            fp = io.BytesIO()
-            tts = gTTS(text=text_str, lang=self.lang)
-            tts.write_to_fp(fp)
-            fp.seek(0)
+            audio_buffer = io.BytesIO()
 
-            # Render inline Jupyter audio element and autoplay
-            display(Audio(fp.read(), autoplay=True))
-        except Exception as e:
-            print(f"[Warning] Could not render audio: {e}")
+            tts = gTTS(
+                text=text_str,
+                lang=self.lang
+            )
+
+            tts.write_to_fp(audio_buffer)
+
+            audio_buffer.seek(0)
+
+            return audio_buffer.getvalue()
+
+        except Exception as error:
+            raise RuntimeError(
+                f"Failed to generate speech: {error}"
+            ) from error

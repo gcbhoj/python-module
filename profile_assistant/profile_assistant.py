@@ -1,20 +1,22 @@
-import re
 import os
+import re
+import base64
 
-from utils.file_system_reader import FileSystemReader
-
-from profile_assistant.const_enums import ExitInformation
 from repository.resume_reader import ResumeReader
+from repository.profile_assistant_repo import ProfileAssistantRepo
 
-from profile_assistant.const_enums import NormalGreetings, TimedGreeting, BotsInformation, DateTimeInformation, SpeakerCommand
+from profile_assistant.const_enums import (
+    ExitInformation,
+    NormalGreetings,
+    TimedGreeting,
+    BotsInformation,
+    DateTimeInformation,
+)
 
 from profile_assistant.greetings_manager import GreetingsManager
 from profile_assistant.profile_assistant_manager import ProfileAssistantManager
 from profile_assistant.question_analyzer import SentenceAnalyzer
 from profile_assistant.speaker import Speaker
-
-
-from repository.profile_assistant_repo import ProfileAssistantRepo
 
 
 class ProfileAssistant:
@@ -23,114 +25,285 @@ class ProfileAssistant:
 
         self.name = "Bahire"
         self.date_of_birth = "2026-08-19"
-        self.final_query = [e.value for e in ExitInformation]
-        self.is_final_query = False
-        self.is_voice_enabled = False
-        if os.getenv("DEV_ENV") == "development":
-            self.is_voice_enabled = True
 
-        # Initializing resume class
+        self.final_query = [
+            enum.value
+            for enum in ExitInformation
+        ]
+
+        self.is_final_query = False
+
+        # ---------------------------------------------
+        # Voice state
+        # ---------------------------------------------
+
+        self.is_voice_enabled = False
+        # if os.getenv("DEV_ENV") == "development":
+        #     self.is_voice_enabled = True
+
+
+        # ---------------------------------------------
+        # Dependencies
+        # ---------------------------------------------
+
         self.resume_reader = ResumeReader()
-        # Initialize Greetings Manager Class
+
         self.greeting_manager = GreetingsManager()
-        # Initializing Profile Assistant Manager
+
         self.myAssistant = ProfileAssistantManager()
+
         self.question_analyzer = SentenceAnalyzer()
+
         self.speaker = Speaker()
+
         self.repo = ProfileAssistantRepo()
 
-    def start(self):
-        
-        profile_alias = self.resume_reader.get_alias()
-        
-        initial_greeting = self.greeting_manager.generate_startup_greeting(self.name,profile_alias)
-        print(f"{self.greeting_manager.generate_timed_greeting()}\n"
-            f"{initial_greeting}"            
+    # =================================================
+    # PROCESS USER MESSAGE
+    # =================================================
+
+    def start(self, user_input: str):
+
+        if not user_input or not user_input.strip():
+
+            return {
+                "success": False,
+                "message": "User input cannot be empty.",
+                "audio": None,
+            }
+
+        normalized_input = self._normalize_input(
+            user_input
+        )
+
+        # ---------------------------------------------
+        # Exit
+        # ---------------------------------------------
+
+        if normalized_input in self.final_query:
+
+            self.is_final_query = True
+
+            reply = (
+                f"Goodbye! "
+                f"{self.greeting_manager.generate_exit_greeting()}"
             )
-        self.speaker.speak(self.greeting_manager.generate_timed_greeting() + initial_greeting)
 
-        while not self.is_final_query:
+            return self._build_response(reply)
 
-            user_input = input("You: ").strip()
+        # ---------------------------------------------
+        # Analyze question
+        # ---------------------------------------------
+
+        analysis = (
+            self.question_analyzer
+            .analyse_user_input(
+                normalized_input
+            )
+        )
+
+        category = analysis.get("category")
+        intent = analysis.get("intent")
+
+        # ---------------------------------------------
+        # Generate response
+        # ---------------------------------------------
+
+        reply = self._generate_reply(
+            category,
+            intent
+        )
+
+        return self._build_response(reply)
+
+    # =================================================
+    # GENERATE RESPONSE
+    # =================================================
+
+    def _generate_reply(self, category, intent):
+
+        match category:
+
+            case NormalGreetings.__name__:
+
+                return (
+                    self.greeting_manager
+                    .generate_normal_greeting()
+                )
+
+            case TimedGreeting.__name__:
+
+                return (
+                    self.greeting_manager
+                    .generate_timed_greeting()
+                )
+
+            case BotsInformation.__name__:
+
+                return (
+                    self.myAssistant
+                    .generate_bot_info_reply(
+                        intent,
+                        self.name,
+                        self.date_of_birth,
+                    )
+                )
+
+            case DateTimeInformation.__name__:
+
+                return (
+                    self.myAssistant
+                    .generate_date_time_reply(
+                        intent
+                    )
+                )
+
+            case _:
+
+                return (
+                    "I am not sure how to answer that."
+                )
+
+    # =================================================
+    # RESPONSE
+    # =================================================
+
+    def _build_response(self, reply):
+
+        if not reply:
+
+            return {
+                "success": False,
+                "message": "",
+                "audio": None,
+            }
+
+        reply = self._format_reply(reply)
+
+        audio = None
+
+        # Generate audio only when enabled
+        if self.is_voice_enabled:
+
+            audio_bytes = self.speak(reply)
             
-            # Ignore empty input
-            if not user_input:
-                continue
-            
-            normalized_user_input = self._normalize_input(user_input)
-            
-            # Exit check
-            if normalized_user_input in self.final_query:
-                self.is_final_query = True
-                print(f"{self.name}: Goodbye!\n"
-                      f"{self.greeting_manager.generate_exit_greeting()}")
-                self.speaker.speak(self.greeting_manager.generate_exit_greeting())
-                break
-            
-            user_input_analysis = self.question_analyzer.analyse_user_input(normalized_user_input)
-            enum_category = user_input_analysis.get("category")
-            intent = user_input_analysis.get("intent")
-            
-            match enum_category:
-                case NormalGreetings.__name__:
-                    reply = self.greeting_manager.generate_normal_greeting()
-                    print(f"{self.name}: {reply}.")
-                    self.speaker.speak(reply)
-                                        
-                case TimedGreeting.__name__:
-                    reply = self.greeting_manager.generate_timed_greeting()
-                    print(f"{self.name}: {reply}.")
-                    self.speaker.speak(reply)
-                    
-                case BotsInformation.__name__:
-                    reply = self.myAssistant.generate_bot_info_reply(intent, self.name, self.date_of_birth)
-                    print(f"{self.name}: {reply}.")
-                    self.speaker.speak(reply)
-                    
-                case DateTimeInformation.__name__:
-                    reply = self.myAssistant.generate_date_time_reply(intent)
-                    print(f"{self.name}: {reply}.")
-                    self.speaker.speak(reply)
-                case _:
-                    print(user_input_analysis)
-                
+            if audio_bytes:
+                audio = base64.b64encode(audio_bytes).decode("utf-8")
 
-    @staticmethod
-    def _normalize_input(user_input: str) -> str:
+        return {
+            "success": True,
+            "message": reply,
+            "audio": audio,
+        }
 
-            if not user_input:
-                return ""
+    # =================================================
+    # VOICE BUTTON ACTIONS
+    # =================================================
 
-            # Remove leading/trailing whitespace
-            normalized = user_input.strip().lower()
-
-            # Remove question marks
-            normalized = normalized.replace("?", "")
-
-            # Normalize multiple spaces
-            normalized = re.sub(r"\s+", " ", normalized)
-
-            return normalized.strip()
-        
     def enable_voice(self):
+
         self.is_voice_enabled = True
 
+        return {
+            "success": True,
+            "voiceEnabled": True,
+            "message": "Voice mode enabled.",
+        }
 
     def disable_voice(self):
+
         self.is_voice_enabled = False
-        
-    def speak(self,text):
+
+        return {
+            "success": True,
+            "voiceEnabled": False,
+            "message": "Voice mode disabled.",
+        }
+
+    def get_voice_status(self):
+
+        return {
+            "voiceEnabled": self.is_voice_enabled
+        }
+
+    # =================================================
+    # SPEAKER
+    # =================================================
+
+    def speak(self, text):
+
+        if not text:
+            return None
+
         return self.speaker.speak(text)
-        
 
+    # =================================================
+    # STARTUP
+    # =================================================
 
+    def get_startup_greeting(self):
 
+        profile_alias = (
+            self.resume_reader.get_alias()
+        )
 
+        timed = (
+            self.greeting_manager
+            .generate_timed_greeting()
+        )
 
+        startup = (
+            self.greeting_manager
+            .generate_startup_greeting(
+                self.name,
+                profile_alias,
+            )
+        )
 
+        reply = (
+            f"{timed}\n"
+            f"{startup}"
+        )
 
-if __name__ == "__main__":
+        return self._build_response(reply)
 
-    assistant = ProfileAssistant()
+    # =================================================
+    # HELPERS
+    # =================================================
 
-    assistant.start()
+    @staticmethod
+    def _format_reply(reply):
+
+        if isinstance(reply, (list, tuple)):
+
+            return ". ".join(
+                str(item)
+                for item in reply
+            )
+
+        return str(reply).strip()
+
+    @staticmethod
+    def _normalize_input(user_input: str):
+
+        if not user_input:
+            return ""
+
+        normalized = (
+            user_input
+            .strip()
+            .lower()
+        )
+
+        normalized = normalized.replace(
+            "?",
+            ""
+        )
+
+        normalized = re.sub(
+            r"\s+",
+            " ",
+            normalized
+        )
+
+        return normalized.strip()
