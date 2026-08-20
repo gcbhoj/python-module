@@ -49,6 +49,22 @@ class ProfileAssistantRepo(BaseRepository):
             "message":"Repository Successfully Initialized "
         }
         
+    def retrieve_name(self):
+        """Retrieves the name of the profile assistant."""
+
+        result = self.collection.find_one(
+            {},
+            {"_id": 0, "assistantName": 1}
+        )
+        assit_name = result.get("assistantName") if result else None
+        
+        
+        
+        return {
+            "success": True,
+            "assistName":assit_name
+        }
+        
     def initialize_new_chat_session(self):
         """Create and initialize a new chat session."""
 

@@ -16,10 +16,14 @@ class ProfileAssistantService:
         
         return self.repo.initialize_profile_assistant()
     
+    def fetch_name(self):
+        return self.repo.retrieve_name()
+    
     
     def init_new_chat(self):
         logger.info("Service call to initialize new chat with profile assistant. Calling Repo...")
         return self.repo.initialize_new_chat_session()
+    
     
     def enable_speech_mode(self):
         logger.info("Service call to enable speech mode. Calling Profile Assistant")

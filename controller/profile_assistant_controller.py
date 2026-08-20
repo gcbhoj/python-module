@@ -15,6 +15,10 @@ class ProfileAssistantController:
     def initialize_profile_assistant(self):
 
         return self.service.init_profile_assistant_repo()
+    
+    def get_name(self):
+        result = self.service.fetch_name()
+        return jsonify(result),200
 
     def initialize_chat(self):
         

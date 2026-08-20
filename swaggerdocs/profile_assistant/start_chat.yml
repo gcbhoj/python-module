@@ -25,7 +25,7 @@ parameters:
         - chatId
         - text
       properties:
-        chatId:
+        chat_id:
           type: string
           description: Unique ID of the chat session.
           example: "7c8d8e4b-1e6c-4e2d-a1f8-8d7f1b8f2f30"

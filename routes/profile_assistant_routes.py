@@ -8,6 +8,11 @@ profile_assistant_bp = Blueprint("profile_assistant", __name__)
 
 controller = ProfileAssistantController()
 
+@profile_assistant_bp.route("/get-name",methods=["GET"])
+@swag_from("../swaggerdocs/profile_assistant/get_name.yml")
+def get_name():
+    return controller.get_name()
+                                                 
 
 @profile_assistant_bp.route("/init-chat", methods=["POST"])
 @swag_from("../swaggerdocs/profile_assistant/initialize_new_chat.yml")
