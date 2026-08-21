@@ -17,6 +17,7 @@ class LoggingComponent(Enum):
     DATE_TIME_MANAGER = "date_time_manager"
     GREETINGS_MANAGER = "greetings_manager"
     PROFILE_ASSISTANT_MANAGER = "profile_assistant_manager"
+    QUESTION_ANALYZER = "question_analyzer"
 
 
 class LogEvent(Enum):
