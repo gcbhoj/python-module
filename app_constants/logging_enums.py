@@ -7,6 +7,7 @@ class ApplicationLayerLogging(Enum):
     REPOSITORY = "repository"
     MIDDLEWARE = "middleware"
     PROFILE_ASSISTANT = "profile_assistant"
+    SECURITY ="security"
 
 
 class LoggingComponent(Enum):
@@ -18,6 +19,10 @@ class LoggingComponent(Enum):
     GREETINGS_MANAGER = "greetings_manager"
     PROFILE_ASSISTANT_MANAGER = "profile_assistant_manager"
     QUESTION_ANALYZER = "question_analyzer"
+    FERNET_ENCODER = "fernet_encoder"
+    ENCODING_SERVICES = "encoding_services"
+    PROFILE_ASSISTANT_SERVICE = "profile_assistant_service"
+    PROFILE_ASSISTANT_REPOSITORY ="profile_assistant_repository"
 
 
 class LogEvent(Enum):

@@ -66,6 +66,10 @@ class ProfileAssistant:
         self.speaker = Speaker()
 
         self.repo = ProfileAssistantRepo()
+    # ---------------------------------------------
+    # Executables
+    # ---------------------------------------------
+        self.get_name()
 
     # =================================================
     # PROCESS USER MESSAGE
@@ -407,6 +411,25 @@ class ProfileAssistant:
                     LogEvent.CALLED.value)
 
         return self._build_response(reply)
+    
+    # =================================================
+    # RETRIEVING NAME AND DATE OF BIRTH
+    # =================================================
+    def get_name(self):
+        logger.info("[%s] [%s] get name [%s]",
+                    ApplicationLayerLogging.PROFILE_ASSISTANT.value,
+                    LoggingComponent.PROFILE_ASSISTANT_MANAGER.value,
+                    LogEvent.CALLED.value)
+        result = self.profile_assistant_manager.retrieve_name_dob()
+        logger.info("[%s] [%s] get name result [%s]",
+                    ApplicationLayerLogging.PROFILE_ASSISTANT.value,
+                    LoggingComponent.PROFILE_ASSISTANT_MANAGER.value,
+                    LogEvent.COMPLETED.value)
+        
+        self.name = result["assistName"]
+        self.date_of_birth = result["dateOfBirth"]
+        
+        return None       
 
     # =================================================
     # HELPERS

@@ -18,6 +18,8 @@ from profile_assistant.const_enums import (
 from profile_assistant.date_time_manager import DateTimeManager
 from profile_assistant.question_analyzer import SentenceAnalyzer
 
+from repository.profile_assistant_repo import ProfileAssistantRepo
+
 from api_calls.open_weather_map import GetCurrentWeatherData
 
 
@@ -45,6 +47,7 @@ class ProfileAssistantManager:
 
         self.date_time_manager = DateTimeManager()
         self.question_analyzer = SentenceAnalyzer()
+        self.repo = ProfileAssistantRepo()
 
         logger.debug(
             "[%s] [%s] profile assistant manager initialized [%s]",
@@ -52,6 +55,26 @@ class ProfileAssistantManager:
             LoggingComponent.PROFILE_ASSISTANT.value,
             LogEvent.COMPLETED.value,
         )
+    # ============================================================
+    # RETRIEVE NAME AND DATE OF BIRTH
+    # ============================================================
+    
+    def retrieve_name_dob(self):
+        logger.info("[%s] [%s] retrieving assistant's name [%s]",
+                    ApplicationLayerLogging.PROFILE_ASSISTANT.value,
+                    LoggingComponent.PROFILE_ASSISTANT_MANAGER.value,
+                    LogEvent.STARTED.value )
+        logger.info("[%s] [%s] retrieving assistant's name [%s]",
+                    ApplicationLayerLogging.PROFILE_ASSISTANT.value,
+                    LoggingComponent.PROFILE_ASSISTANT_REPOSITORY.value,
+                    LogEvent.CALLED.value )
+        result = self.repo.retrieve_name();
+        logger.info("[%s] [%s] retrieving assistant's name [%s]",
+                    ApplicationLayerLogging.PROFILE_ASSISTANT.value,
+                    LoggingComponent.PROFILE_ASSISTANT_REPOSITORY.value,
+                    LogEvent.COMPLETED.value )
+        
+        return result    
 
     # ============================================================
     # DATE / TIME
