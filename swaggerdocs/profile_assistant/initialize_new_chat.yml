@@ -1,0 +1,41 @@
+Initializes new chat history with profile Assistant.
+---
+tags:
+  - Profile Assistant
+
+summary: Initializes new chat history with the profile Assistant.
+
+description: Initializes a new conversion history with profile assistant.
+
+responses:
+  201:
+    description: Initializes new chat object.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          message: 
+            type: object
+            properties:
+              text:
+                type: string
+                example: New chat session initialized
+
+  400:
+    description: Profile assistant has not been initialized.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        data:
+          message: 
+            type: object
+            properties:
+              text:
+                type: string
+                example: Profile assistant has not been initialized.

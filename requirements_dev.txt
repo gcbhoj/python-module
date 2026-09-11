@@ -11,4 +11,9 @@ pymongo
 biopython
 ## Testing
 pytest
+#NLP
+sentence-transformers
+gTTS
+#Security
+cryptography
 

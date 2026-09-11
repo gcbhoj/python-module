@@ -1,0 +1,52 @@
+Retrieves the name of the Profile Assistant.
+---
+tags:
+  - Profile Assistant
+
+summary: Retrieves the name of the Profile Assistant.
+
+description: |
+  Retrieves the configured name of the Profile Assistant from the database.
+
+responses:
+  200:
+    description: Profile Assistant name retrieved successfully.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Bahire
+            dateOfBirth:
+              type: string
+              example: 2026-08-19
+
+  404:
+    description: Profile Assistant was not found.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Profile Assistant was not found.
+
+  500:
+    description: Internal server error.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Failed to retrieve Profile Assistant name.

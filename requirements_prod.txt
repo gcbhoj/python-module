@@ -8,4 +8,12 @@ pydantic
 gunicorn
 pymongo
 flasgger
+## Bio Python Libraries
+biopython
+
+#NLP
+sentence-transformers
+gTTS
+#Security
+cryptography
 

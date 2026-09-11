@@ -1,0 +1,54 @@
+---
+tags:
+  - Profile Assistant
+
+summary: Enables voice mode for the Profile Assistant.
+
+description: >
+  Enables voice responses for the Profile Assistant.
+  Once enabled, subsequent chat responses may include
+  generated audio.
+
+responses:
+  200:
+    description: Voice mode enabled successfully.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+
+        voiceEnabled:
+          type: boolean
+          example: true
+
+        message:
+          type: string
+          example: Voice mode enabled.
+
+  400:
+    description: Unable to enable voice mode.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+
+        message:
+          type: string
+          example: Unable to enable voice mode.
+
+  500:
+    description: Internal server error.
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+
+        message:
+          type: string
+          example: An internal server error occurred.
