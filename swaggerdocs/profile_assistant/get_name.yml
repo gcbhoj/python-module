@@ -23,6 +23,9 @@ responses:
             name:
               type: string
               example: Bahire
+            dateOfBirth:
+              type: string
+              example: 2026-08-19
 
   404:
     description: Profile Assistant was not found.

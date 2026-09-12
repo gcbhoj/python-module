@@ -41,14 +41,7 @@ ENV/
 *.npy
 *.npz
 
-# Model weights and artifacts
-models/
-*.pkl
-*.joblib
-*.pth
-*.onnx
-*.pb
-*.ckpt
+
 
 # Log files and experiment tracking
 logs/
